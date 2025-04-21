@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\UserController;
+
+Route::middleware([CorsMiddleware::class])->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+});
+
+// Add this route to handle fetching users
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+
+Route::get('/ping', function () {
+    return response()->json(['message' => 'pong']);
+});
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
