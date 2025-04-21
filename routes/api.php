@@ -18,9 +18,12 @@ Route::get('/ping', function () {
     return response()->json(['message' => 'pong']);
 });
 
+// Route tanpa autentikasi
 Route::post('/login', [AuthController::class, 'login']);
 
+// Route yang butuh autentikasi Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/users', [UserController::class, 'index']);
 });
