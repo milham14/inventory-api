@@ -27,12 +27,15 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $token = $users->createToken('api-token')->plainTextToken;
+
         // Jika valid, Anda bisa membuat token autentikasi (misalnya menggunakan Sanctum atau Passport)
         // Untuk contoh sederhana, kita kembalikan data admin (tanpa token)
         return response()->json([
             'status'  => 'success',
             'message' => 'Login berhasil',
-            'admin'   => $users
+            'admin'   => $users,
+            'token'   => $token
         ]);
     }
 
