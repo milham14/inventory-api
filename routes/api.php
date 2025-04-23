@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\UserController;
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
 
 Route::get('/ping', function () {
-    return response()->json(['message' => 'pong']);
+    return response()->json(['message' => 'Berhasil Tersambung']);
 });
 
 // Route tanpa autentikasi
