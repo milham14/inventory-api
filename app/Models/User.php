@@ -53,4 +53,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    // Relasi ke Permission melalui Role (many-to-many)
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'role_has_permissions', 'role_id', 'permission_id')
+                    ->withTimestamps();
+    }
 }

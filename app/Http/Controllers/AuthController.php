@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User; 
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;  
 
 class AuthController extends Controller
 {
@@ -28,6 +30,8 @@ class AuthController extends Controller
         }
 
         $token = $users->createToken('api-token')->plainTextToken;
+
+        $users->load('role.permissions');
 
         // Jika valid, Anda bisa membuat token autentikasi (misalnya menggunakan Sanctum atau Passport)
         // Untuk contoh sederhana, kita kembalikan data admin (tanpa token)
