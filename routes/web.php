@@ -9,3 +9,7 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return redirect('/login');
 })->name('login');
+
+Route::get('{any}', function () {
+    return file_get_contents(public_path('index.html'));
+})->where('any', '.*');
