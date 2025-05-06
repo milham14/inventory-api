@@ -43,14 +43,34 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
-        $user->update([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
+    
+        // Validasi
+        $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|string|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role_id' => 'required|exists:roles,id',
+            'password' => 'nullable|string|min:6'
         ]);
-
-        return response()->json($user);
+    
+        // Update data
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
+    
+        $passwordChanged = false;
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+            $passwordChanged = true;
+        }
+    
+        $user->save();
+    
+        return response()->json([
+            'user' => $user,
+            'message' => $passwordChanged ? 'User updated. Password has been changed.' : 'User updated.'
+        ]);
     }
 
     // Hapus user
